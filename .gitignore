@@ -14,3 +14,6 @@ __pycache__/
 *.lst
 *.png
 !tools/music/pt_drive.bin
+work_s6/
+*.raw
+*.sym
