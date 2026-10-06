@@ -279,6 +279,16 @@ nextframe:
         jr nc,.pw
 .flip:  ld a,(cursel)
         call flip
+        ld a,(palflag)        ; a new palette takes effect together with the table flip
+        rra
+        jr nc,.nopalw
+        di
+        VREG 0,16
+        ld hl,palbuf
+        ld bc,0x209A
+        otir
+        ei
+.nopalw:
         ld a,(meta_nopace)
         or a
         jr nz,.nolate
