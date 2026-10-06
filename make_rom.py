@@ -13,8 +13,8 @@ Usage examples
   python make_rom.py myclip.mp4 mysong.pro --fit letterbox        (keep the full 16:9 picture with black bars)
   python make_rom.py myclip.mp4 mysong.pro --crop-x 0.3           (move the 4:3 crop window to the left)
 
-Needs: Python 3 with numpy, scipy, pillow; ffmpeg (PATH or FFMPEG=...); sjasmplus (PATH, SJASMPLUS=..., or tools/sjasmplus/).
-The PRO-TRACKER music driver (Tyfoon Software 1991, without its loader) is included in tools/music/.
+Needs: Python 3 with numpy, scipy, pillow; ffmpeg (PATH or FFMPEG=...); sjasmplus (PATH, SJASMPLUS=..., or tools/sjasmplus/);
+for music: run once  python tools/build_pt_driver.py PT_DRIVE.ASC  (the driver itself is not in the repository).
 Run in openMSX:  openmsx -machine Philips_NMS_8250 -ext fmpac -cart out.rom -romtype NEO-8     (ESC quits)
 """
 import argparse, math, os, shutil, subprocess, sys, time
@@ -66,12 +66,19 @@ def main():
     ap.add_argument('--duration', type=float, default=0.0, help='duration in seconds (0 = whole clip)')
     ap.add_argument('--denoise', default='3:3:8:6', help='ffmpeg hqdn3d strength (default 3:3:8:6, "off" to disable)')
     ap.add_argument('--segment-seconds', type=float, default=3.2, help='seconds per palette segment (default 3.2)')
-    ap.add_argument('--kcon', type=float, default=0.05, help='penalty for high-contrast colour pairs (default 0.05)')
-    ap.add_argument('--hyst', type=float, default=0.25, help='temporal stability: keep the previous tile if it is nearly as good (default 0.25, 0 = off)')
+    ap.add_argument('--kcon', type=float, default=None, help='penalty for high-contrast colour pairs (v2 default 0.035, classic 0.05; higher = less grain, less detail)')
+    ap.add_argument('--engine', choices=['v2', 'classic'], default='v2',
+                    help='encoder: v2 (default; linear-light dithering + palette search, uses --workers processes) or classic (the original single-process encoder)')
+    ap.add_argument('--workers', type=int, default=1, help='parallel processes for the v2 engine (default 1; raise it if you want it faster)')
+    ap.add_argument('--hyst', type=float, default=None, help='temporal stability: keep the previous tile if it is nearly as good (v2 default 0.4, classic 0.25, 0 = off)')
+    ap.add_argument('--kcon-v2', type=float, default=0.035, help=argparse.SUPPRESS)
     ap.add_argument('--safe', action='store_true', help='spaced VDP writes (slower player, ~98 ms/frame with music: only for ~8 fps)')
     ap.add_argument('--work', help='working folder (default: make_rom_work/<name>)')
     ap.add_argument('--keep-frames', action='store_true', help='keep the extracted raw frames (large) in the working folder')
     a = ap.parse_args()
+    a.kcon_explicit = a.kcon is not None
+    if a.kcon is None:
+        a.kcon = 0.05
 
     # ---------------------------------------------------------------- checks
     for mod in ('numpy', 'scipy', 'PIL'):
@@ -94,7 +101,7 @@ def main():
             die('song not found: ' + song)
         for f in ('pt_drive.bin', 'pt_syms.inc'):
             if not os.path.exists(os.path.join(TOOLS, 'music', f)):
-                die('music driver file missing: tools/music/%s (restore it from the repository, or run  python tools/build_pt_driver.py PT_DRIVE.ASC)' % f)
+                die('music driver not prepared (tools/music/%s missing). Run once:  python tools/build_pt_driver.py PT_DRIVE.ASC' % f)
         sd = open(song, 'rb').read()
         if len(sd) > 0x2000:
             die(f'song is {len(sd)} bytes; the ROM has room for 8192')
@@ -147,15 +154,24 @@ def main():
     if nframes < 3:
         die('ffmpeg produced no frames')
     segs = (nframes + seg - 1) // seg
-    est_min = (nframes * 0.4 + segs * 22) / 60
+    est_min = ((nframes * 1.6 + segs * 45) / max(1, a.workers) if a.engine == 'v2' else (nframes * 0.4 + segs * 22)) / 60
     print(f'      {nframes} frames ({nframes / fps_src:.1f} s) in {time.time() - t0:.0f} s; encoding will take roughly {est_min:.0f} minutes')
 
     # ---------------------------------------------------------------- 2. encode
     stream = os.path.join(work, 'stream.bin')
     print('[2/3] encoding (palette per segment, error diffusion) ...')
     t0 = time.time()
-    run([sys.executable, os.path.join(TOOLS, 'encode4.py'), '--frames', frames, '--seg', str(seg), '--hyst', str(a.hyst),
-         '--out', stream], env={'KCON': a.kcon}, cwd=TOOLS, label='encoder')
+    if a.engine == 'v2':
+        cmd = [sys.executable, os.path.join(TOOLS, 'encode6.py'), '--frames', frames, '--seg', str(seg), '--workers', str(max(1, a.workers)),
+               '--out', stream]
+        if a.hyst is not None:
+            cmd += ['--hyst', str(a.hyst)]
+        if a.kcon_explicit:
+            cmd += ['--kcon', str(a.kcon)]
+        run(cmd, cwd=TOOLS, label='encoder')
+    else:
+        run([sys.executable, os.path.join(TOOLS, 'encode4.py'), '--frames', frames, '--seg', str(seg), '--hyst',
+             str(0.25 if a.hyst is None else a.hyst), '--out', stream], env={'KCON': a.kcon}, cwd=TOOLS, label='encoder')
     print(f'      encoded in {(time.time() - t0) / 60:.1f} minutes')
 
     # ---------------------------------------------------------------- 3. ROM

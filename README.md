@@ -6,8 +6,8 @@ Play a video clip with background music on a plain **MSX2** (V9938, 64 KB RAM) f
 * **Screen 4 (GRAPHIC 3)**, 256x192, 16 colours from the 512-colour palette, two colours per 8x1 pixel row
 * **Full refresh**: every frame rewrites all 768 tiles (6 KB patterns + 6 KB colours) into a hidden pair of tables that is flipped at
   vblank with three VDP register writes - no tearing, no stale blocks
-* Picture quality comes from the encoder (error diffusion inside the two-colour rows, a refined palette per ~3 s segment,
-  temporal tile hysteresis), not from the player, which is a plain streaming loop
+* Picture quality comes from the encoder (linear-light error diffusion inside the two-colour rows, a palette searched on the 512-colour grid for
+  each ~3 s segment, temporal tile hysteresis), not from the player, which is a plain streaming loop
 * **12 fps** on NTSC (5 vblanks per frame) / 12.5 fps on PAL (4 vblanks per frame), 10 fps is exact on both
 * Optional **MSX-Music** (YM2413) background music, interrupt driven, using the PRO-TRACKER V1.0 driver by Tyfoon Software (included, see below)
 
@@ -37,7 +37,7 @@ More options (frame rate, 16:9 letterbox/crop window, trimming, no music, ...): 
 ## How it works
 
 ```
-video --ffmpeg--> 256x192 frames --tools/encode4.py--> stream.bin --tools/build_rom.py--> NEO8 ROM
+video --ffmpeg--> 256x192 frames --tools/encode6.py (or encode4.py)--> stream.bin --tools/build_rom.py--> NEO8 ROM
                                       (palette per segment,           (player4.asm + song + stream,
                                        error diffusion, hysteresis)    patched meta data)
 ```
@@ -77,7 +77,9 @@ only fit around 8-10 fps.
 ```
 make_rom.py               the one-command front end
 README_make_rom.md        all options of make_rom.py
-tools/encode4.py          encoder (frames -> stream)
+tools/encode6.py          encoder v2 (default): linear-light dithering + palette search, segments can be encoded in parallel
+tools/encode4.py          classic encoder (frames -> stream)
+tools/s4_lab.py           coder / palette-search / metric functions used by encode6 (also an image-quality test bench)
 tools/screen4_sim.py      colour-pair / dithering / palette code used by the encoder (also a single-frame comparison tool)
 tools/s4_fs.py            single-frame experiments (error diffusion, palette refinement, per-band palettes)
 tools/s4_decode.py        decode a stream back to images

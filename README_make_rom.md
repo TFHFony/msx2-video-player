@@ -17,3 +17,12 @@ Options: --fps (6..12.5, default 12), --fit crop|letterbox|stretch, --crop-x, --
 * Needs Python 3 with numpy, scipy, pillow, ffmpeg (PATH or FFMPEG=...) and sjasmplus (PATH, SJASMPLUS=..., or tools/sjasmplus/).
 * Intermediate files (stream.bin, palette, ...) go to make_rom_work/<name>/ ; the raw frames are deleted afterwards unless --keep-frames.
 * Test in openMSX:  openmsx -machine Philips_NMS_8250 -ext fmpac -cart out.rom -romtype NEO-8     (ESC quits)
+
+## Encoder engines
+* `--engine v2` (default): linear-light error diffusion, a palette search on the 512-colour grid (so each ~3 s segment gets a palette that
+  really fits its colours) and stronger temporal stability (tile hysteresis 0.4). In our tests about +3 dB (blurred PSNR in linear light) and
+  visibly more natural skin tones than `classic`, with less flicker in static areas. About 3-4x slower than classic.
+  Palettes are sorted dark to light, so palette entry 0 (the border colour) is always the darkest colour.
+  It runs on **one process by default**. Each palette segment is independent, so `--workers N` encodes N segments in parallel.
+* `--engine classic`: the original single-process encoder (`tools/encode4.py`).
+* Same stream format and the same player either way.
