@@ -1,5 +1,4 @@
 ; PRO-TRACKER V1.0 music driver, (c) Tyfoon Software 1991.
-; Included in this repository with the permission of a former Tyfoon team member.
 ; Changes for the msx2-video-player project: converted from MSX-assembler (&H/&B) to sjasmplus syntax, and the
 ; BDOS disk loader (entry CA06h) removed - it is a bare RET here, the song is copied from the ROM into RAM page 0 instead.
 ; Assemble with sjasmplus (tools/build_pt_driver.py does this from the original PT_DRIVE.ASC) -> pt_drive.bin

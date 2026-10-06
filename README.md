@@ -28,8 +28,7 @@ More options (frame rate, 16:9 letterbox/crop window, trimming, no music, ...): 
 * Python 3 with `numpy`, `scipy`, `pillow`
 * [ffmpeg](https://ffmpeg.org/) (on the PATH, or `FFMPEG=/path/to/ffmpeg`)
 * [sjasmplus](https://github.com/z00m128/sjasmplus) (on the PATH, `SJASMPLUS=...`, or unpacked into `tools/sjasmplus/`)
-* The music driver is the PRO-TRACKER V1.0 driver by **Tyfoon Software (1991)**, included here with the permission of a former Tyfoon
-  team member, in the version this project needs: the disk loader is removed and the source is converted to sjasmplus syntax
+* The music driver is the PRO-TRACKER V1.0 driver by **Tyfoon Software (1991)**, included here in the version this project needs: the disk loader is removed and the source is converted to sjasmplus syntax
   (`tools/music/pt_drive_noloader.asm`, assembled binary `tools/music/pt_drive.bin`, addresses in `tools/music/pt_syms.inc`).
   `tools/build_pt_driver.py` can regenerate these from the original `PT_DRIVE.ASC`.
   The song must be a ProTracker `.PRO` file of at most 8 KB (MSX-Music); it loops by itself (no song is included).
