@@ -1,0 +1,16 @@
+*.rom
+*.rgb
+*.bin
+*.npy
+*.mp4
+*.pro
+*.PRO
+make_rom_work/
+tools/music/
+tools/sjasmplus/
+tools/ffmpeg_path.txt
+__pycache__/
+*.log
+*.sym
+*.lst
+*.png
