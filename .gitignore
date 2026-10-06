@@ -6,7 +6,6 @@
 *.pro
 *.PRO
 make_rom_work/
-tools/music/
 tools/sjasmplus/
 tools/ffmpeg_path.txt
 __pycache__/
@@ -14,3 +13,4 @@ __pycache__/
 *.sym
 *.lst
 *.png
+!tools/music/pt_drive.bin

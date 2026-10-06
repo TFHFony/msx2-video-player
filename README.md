@@ -9,15 +9,14 @@ Play a video clip with background music on a plain **MSX2** (V9938, 64 KB RAM) f
 * Picture quality comes from the encoder (error diffusion inside the two-colour rows, a refined palette per ~3 s segment,
   temporal tile hysteresis), not from the player, which is a plain streaming loop
 * **12 fps** on NTSC (5 vblanks per frame) / 12.5 fps on PAL (4 vblanks per frame), 10 fps is exact on both
-* Optional **MSX-Music** (YM2413) background music, interrupt driven, using the PRO-TRACKER driver (you supply your own copy, see below)
+* Optional **MSX-Music** (YM2413) background music, interrupt driven, using the PRO-TRACKER V1.0 driver by Tyfoon Software (included, see below)
 
-Made by Claude & The File-Hunter of FONY.
+Made by Claude & The File-Hunter of FONY. Released under the [Unlicense](LICENSE) (public domain).
 
 ## Quick start
 
 ```
 pip install numpy scipy pillow          # plus ffmpeg and sjasmplus on the PATH (or see "Requirements")
-python tools/build_pt_driver.py PT_DRIVE.ASC          # once, only if you want music
 python make_rom.py myclip.mp4 mysong.pro               # -> myclip.rom
 openmsx -machine Philips_NMS_8250 -ext fmpac -cart myclip.rom -romtype NEO-8     # ESC quits
 ```
@@ -29,9 +28,11 @@ More options (frame rate, 16:9 letterbox/crop window, trimming, no music, ...): 
 * Python 3 with `numpy`, `scipy`, `pillow`
 * [ffmpeg](https://ffmpeg.org/) (on the PATH, or `FFMPEG=/path/to/ffmpeg`)
 * [sjasmplus](https://github.com/z00m128/sjasmplus) (on the PATH, `SJASMPLUS=...`, or unpacked into `tools/sjasmplus/`)
-* The music driver is **not** included (it is Tyfoon Software's PRO-TRACKER V1.0 driver, 1991, and not ours to redistribute).
-  `tools/build_pt_driver.py` converts your own `PT_DRIVE.ASC` (removing its disk loader) and assembles it to `tools/music/`.
-  The song must be a ProTracker `.PRO` file of at most 8 KB (MSX-Music); it loops by itself.
+* The music driver is the PRO-TRACKER V1.0 driver by **Tyfoon Software (1991)**, included here with the permission of a former Tyfoon
+  team member, in the version this project needs: the disk loader is removed and the source is converted to sjasmplus syntax
+  (`tools/music/pt_drive_noloader.asm`, assembled binary `tools/music/pt_drive.bin`, addresses in `tools/music/pt_syms.inc`).
+  `tools/build_pt_driver.py` can regenerate these from the original `PT_DRIVE.ASC`.
+  The song must be a ProTracker `.PRO` file of at most 8 KB (MSX-Music); it loops by itself (no song is included).
 * openMSX for testing (`-ext fmpac` gives the MSX-Music chip on a plain MSX2 machine)
 
 ## How it works
@@ -82,7 +83,8 @@ tools/screen4_sim.py      colour-pair / dithering / palette code used by the enc
 tools/s4_fs.py            single-frame experiments (error diffusion, palette refinement, per-band palettes)
 tools/s4_decode.py        decode a stream back to images
 tools/build_rom.py        stream + player + song -> ROM
-tools/build_pt_driver.py  prepare the (not included) PT driver from your own PT_DRIVE.ASC
+tools/build_pt_driver.py  regenerate tools/music/ from the original PT_DRIVE.ASC (optional)
+tools/music/              PRO-TRACKER driver (Tyfoon Software 1991) without its loader: source, binary, symbols
 tools/player4/            Z80 player with music;  tools/player4n/  without music
 tools/run/                openMSX test scripts (halt at frame N and dump VRAM, per-frame timing, FM write counting)
 tools/vdptest/            small test ROMs that measured Z80/VDP throughput (OUTI, OTIR, HMMM, HMMC ...)
@@ -90,4 +92,4 @@ tools/vdptest/            small test ROMs that measured Z80/VDP throughput (OUTI
 
 ## Not included
 
-The sample video, built ROMs, the PT-DRIVE source/binary, any song, ffmpeg and sjasmplus.
+The sample video, built ROMs, any song, ffmpeg and sjasmplus.

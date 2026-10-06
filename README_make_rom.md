@@ -11,9 +11,9 @@ Options: --fps (6..12.5, default 12), --fit crop|letterbox|stretch, --crop-x, --
 
 * Frame rate: the ROM shows one frame every N vblanks, N = round(50/fps) on 50 Hz and round(60/fps) on 60 Hz. 12 fps gives 12.5 fps (PAL) / 12 fps
   (NTSC); 10 fps is exact on both. A full refresh needs at least 4 ticks (50 Hz) / 5 ticks (60 Hz), so 12.5 fps is the maximum.
-* The song must be a ProTracker .PRO file of at most 8 KB (MSX-Music). It loops by itself. The driver (PT_DRIVE, not included) is prepared by tools/build_pt_driver.py.
+* The song must be a ProTracker .PRO file of at most 8 KB (MSX-Music). It loops by itself. The PRO-TRACKER driver (Tyfoon Software 1991, loader removed) is included in tools/music/.
 * Time: roughly 0.4 s per frame plus ~20 s per palette segment (about 15 minutes for a 2-minute clip at 12 fps).
 * ROM size ~ 12 KB per frame (12 fps: 2 minutes = ~17 MB). The NEO8 bank registers address at most 32 MB.
-* Needs Python 3 with numpy, scipy, pillow, ffmpeg (PATH or FFMPEG=...) and sjasmplus (PATH, SJASMPLUS=..., or tools/sjasmplus/). For music run once: python tools/build_pt_driver.py PT_DRIVE.ASC
+* Needs Python 3 with numpy, scipy, pillow, ffmpeg (PATH or FFMPEG=...) and sjasmplus (PATH, SJASMPLUS=..., or tools/sjasmplus/).
 * Intermediate files (stream.bin, palette, ...) go to make_rom_work/<name>/ ; the raw frames are deleted afterwards unless --keep-frames.
 * Test in openMSX:  openmsx -machine Philips_NMS_8250 -ext fmpac -cart out.rom -romtype NEO-8     (ESC quits)

@@ -13,8 +13,8 @@ Usage examples
   python make_rom.py myclip.mp4 mysong.pro --fit letterbox        (keep the full 16:9 picture with black bars)
   python make_rom.py myclip.mp4 mysong.pro --crop-x 0.3           (move the 4:3 crop window to the left)
 
-Needs: Python 3 with numpy, scipy, pillow; ffmpeg (PATH or FFMPEG=...); sjasmplus (PATH, SJASMPLUS=..., or tools/sjasmplus/);
-for music: run once  python tools/build_pt_driver.py PT_DRIVE.ASC  (the driver itself is not in the repository).
+Needs: Python 3 with numpy, scipy, pillow; ffmpeg (PATH or FFMPEG=...); sjasmplus (PATH, SJASMPLUS=..., or tools/sjasmplus/).
+The PRO-TRACKER music driver (Tyfoon Software 1991, without its loader) is included in tools/music/.
 Run in openMSX:  openmsx -machine Philips_NMS_8250 -ext fmpac -cart out.rom -romtype NEO-8     (ESC quits)
 """
 import argparse, math, os, shutil, subprocess, sys, time
@@ -94,7 +94,7 @@ def main():
             die('song not found: ' + song)
         for f in ('pt_drive.bin', 'pt_syms.inc'):
             if not os.path.exists(os.path.join(TOOLS, 'music', f)):
-                die('music driver not prepared (tools/music/%s missing). Run once:  python tools/build_pt_driver.py PT_DRIVE.ASC' % f)
+                die('music driver file missing: tools/music/%s (restore it from the repository, or run  python tools/build_pt_driver.py PT_DRIVE.ASC)' % f)
         sd = open(song, 'rb').read()
         if len(sd) > 0x2000:
             die(f'song is {len(sd)} bytes; the ROM has room for 8192')

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-"""Prepare the PRO-TRACKER (Tyfoon Software 1991) music driver for the ROM player.
-
-The driver is NOT part of this repository: give this script your own copy of the driver source (PT_DRIVE.ASC) and it
+"""Regenerate the PRO-TRACKER (Tyfoon Software 1991) music driver files in tools/music/ from the original source PT_DRIVE.ASC
+(the converted driver is already included in the repository, this script is only needed to rebuild it). It
   * converts the MSX-assembler syntax (&H.., &B..) to sjasmplus syntax,
   * removes the disk loader (the song comes from the ROM instead),
   * assembles it (ORG CA00h) to  music/pt_drive.bin,
