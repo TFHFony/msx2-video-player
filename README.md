@@ -10,6 +10,8 @@ Play a video clip with background music on a plain **MSX2** (V9938, 64 KB RAM) f
   each ~3 s segment, temporal tile hysteresis), not from the player, which is a plain streaming loop
 * **12 fps** on NTSC (5 vblanks per frame) / 12.5 fps on PAL (4 vblanks per frame), 10 fps is exact on both
 * Optional **MSX-Music** (YM2413) background music, interrupt driven, using the PRO-TRACKER V1.0 driver by Tyfoon Software (included, see below)
+* **Branch `sample-audio`:** instead of a tracker song the clip's own **sampled soundtrack** plays through an **SCC** (Konami SCC cartridge) from a **NEO16** mapper ROM,
+  about 15 kHz, 8 bit, kept in step with the video frames (see [README_sample_audio.md](README_sample_audio.md))
 
 Made by Claude & The File-Hunter of FONY. Released under the [Unlicense](LICENSE) (public domain).
 
@@ -72,6 +74,29 @@ only fit around 8-10 fps.
   at `4000h/6000h/8000h/A000h`. Set window 6000h explicitly if code reaches into it.
 * openMSX romtype name for NEO8 is `NEO-8`.
 
+## Sampled audio through the SCC (branch `sample-audio`)
+
+An MSX2 has no timer interrupt to clock a sample player, and the video loop leaves no CPU time for one. This branch lets the **instruction flow
+itself be the sample clock**: video bytes (`OUTI`) and SCC writes are interleaved in groups of four slots (one sample plus 10/10/10/11
+video bytes), so the 12 KB frame and the audio are produced by the same loop.
+
+* The SCC (in another slot, found by a slot scan) plays 8-bit samples: each one is written to wave entry 0 of channel 1 and the frequency register is
+  rewritten with the deformation register set to "restart wave on frequency write" (the period stays at about 0F00h so the wave position never advances).
+* 1200 samples per video frame (14.4 kHz source = 1/12 s), played at about 14.5 kHz on NTSC and 15.2 kHz on PAL, so sound and picture stay locked.
+* The ROM is NEO16: one 16 KB bank per frame (palette, samples, video data); the player runs from RAM.
+* The player measures the time left per frame and adds or removes `NOP`s in the slot loop, so it also keeps its frame period on slower machines
+  (it was needed on the Panasonic FS-A1ST turbo R in Z80 mode). While it waits for the retrace it keeps playing samples, and the per-frame
+  housekeeping (table flip, bank switch, level control, ESC) is spread over sample slots, so the sample clock never stops at a frame boundary.
+* Verified in openMSX on a PAL MSX2 (NMS8250), an NTSC MSX2 (FS-A1) and a turbo R (FS-A1ST); a first 10 second version was also run on real hardware.
+
+```
+python make_audio6.py clip.mkv 0 0 audio.raw --rate 14546 --store 1472      # band-limited soundtrack on the video timeline
+VARIANT=h python tools/build_rom6.py stream.bin audio.raw out.rom             # stream.bin from tools/encode6.py
+openmsx -machine Philips_NMS_8250 -cart out.rom -romtype NEO-16 -ext scc
+```
+
+The details, the variants that were tried and what they measured are in [README_sample_audio.md](README_sample_audio.md).
+
 ## Repository layout
 
 ```
@@ -87,7 +112,8 @@ tools/build_rom.py        stream + player + song -> ROM
 tools/build_pt_driver.py  regenerate tools/music/ from the original PT_DRIVE.ASC (optional)
 tools/music/              PRO-TRACKER driver (Tyfoon Software 1991) without its loader: source, binary, symbols
 tools/player4/            Z80 player with music;  tools/player4n/  without music
-tools/run/                openMSX test scripts (halt at frame N and dump VRAM, per-frame timing, FM write counting)
+tools/player6/            Z80 player with SCC sampled audio (branch sample-audio); tools/build_rom6.py, make_audio6.py, gen_frame_h.py build it
+tools/run/                openMSX test scripts (halt at frame N and dump VRAM, per-frame timing, FM write counting, SCC write timing and continuity)
 tools/vdptest/            small test ROMs that measured Z80/VDP throughput (OUTI, OTIR, HMMM, HMMC ...)
 ```
 
