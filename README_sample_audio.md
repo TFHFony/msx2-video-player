@@ -1,4 +1,4 @@
-# Sampled audio through an SCC (branch `sample-audio`)
+# Sampled audio through an SCC
 
 The Screen 4 full-refresh video player with the clip's own soundtrack, played as 8-bit samples by an **SCC**, from a **NEO16** mapper ROM.
 

@@ -10,7 +10,7 @@ Play a video clip with background music on a plain **MSX2** (V9938, 64 KB RAM) f
   each ~3 s segment, temporal tile hysteresis), not from the player, which is a plain streaming loop
 * **12 fps** on NTSC (5 vblanks per frame) / 12.5 fps on PAL (4 vblanks per frame), 10 fps is exact on both
 * Optional **MSX-Music** (YM2413) background music, interrupt driven, using the PRO-TRACKER V1.0 driver by Tyfoon Software (included, see below)
-* **Branch `sample-audio`:** instead of a tracker song the clip's own **sampled soundtrack** plays through an **SCC** (Konami SCC cartridge) from a **NEO16** mapper ROM,
+* **Sampled audio variant:** instead of a tracker song the clip's own **sampled soundtrack** plays through an **SCC** (Konami SCC cartridge) from a **NEO16** mapper ROM,
   about 15 kHz, 8 bit, kept in step with the video frames (see [README_sample_audio.md](README_sample_audio.md))
 
 Made by Claude & The File-Hunter of FONY. Released under the [Unlicense](LICENSE) (public domain).
@@ -74,7 +74,7 @@ only fit around 8-10 fps.
   at `4000h/6000h/8000h/A000h`. Set window 6000h explicitly if code reaches into it.
 * openMSX romtype name for NEO8 is `NEO-8`.
 
-## Sampled audio through the SCC (branch `sample-audio`)
+## Sampled audio through the SCC
 
 An MSX2 has no timer interrupt to clock a sample player, and the video loop leaves no CPU time for one. This branch lets the **instruction flow
 itself be the sample clock**: video bytes (`OUTI`) and SCC writes are interleaved in groups of four slots (one sample plus 10/10/10/11
