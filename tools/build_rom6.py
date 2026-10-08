@@ -28,6 +28,7 @@ VARIANTS = {
     's1152':  dict(spf=1152, k=[10, 11, 11, 11], pads=([0, 0, 0, 0], [3, 2, 3, 2]), adapt=None, nofreq=False),
     'adapt':  dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(3, 8), nofreq=False),
     'tail':   dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(3, 8), nofreq=False, tail=True, astore=1472),
+    'h':      dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(3, 8), nofreq=False, tail=True, astore=1472, h=True),
     'hw1280': dict(spf=1280, k=[10, 10, 10, 9], pads=None, adapt=(11, 16), nofreq=True),
 }
 NLEV = 28
@@ -97,11 +98,14 @@ def main():
     v = VARIANTS[variant]
     inc, SPF, PART = make_includes(v)
     open(HERE + '/player6/ladders.inc', 'w').write(inc)
+    if v.get('h'):
+        import gen_frame_h
+        open(HERE + '/player6/frame_h.inc', 'w').write(gen_frame_h.frame_h(v))
     AST = v.get('astore', SPF)
     need = nfr * AST
     if len(s8) < need:
         s8 = np.concatenate([s8, np.zeros(need - len(s8), np.int8)])
-    r = subprocess.run([find_sjasmplus(), '--nologo'] + (['-DADAPT'] if v['adapt'] else []) + (['-DTAIL'] if v.get('tail') else []) + ['player6.asm'], cwd=HERE + '/player6', capture_output=True, text=True)
+    r = subprocess.run([find_sjasmplus(), '--nologo'] + (['-DADAPT'] if v['adapt'] else []) + (['-DTAIL'] if v.get('tail') else []) + (['-DH'] if v.get('h') else []) + ['player6.asm'], cwd=HERE + '/player6', capture_output=True, text=True)
     print(r.stdout, r.stderr)
     assert r.returncode == 0
     boot = bytearray(open(HERE + '/player6/player6.bin', 'rb').read())

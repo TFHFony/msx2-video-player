@@ -15,6 +15,8 @@ ap.add_argument('video'); ap.add_argument('start', type=float); ap.add_argument(
 ap.add_argument('--fps', type=float, default=12.0); ap.add_argument('--spf', type=int, default=1200)
 ap.add_argument('--gap-ms', type=float, default=0.85)
 ap.add_argument('--rate', type=float, default=0, help='playback rate in Hz (default derived from --gap-ms)')
+ap.add_argument('--glide', type=int, default=0, help='cross-fade the first N samples of every frame from the value the player is holding after the pause (0 = off)')
+ap.add_argument('--glide-n', type=int, default=10, help='typical number of extra samples the player plays while waiting for the retrace')
 ap.add_argument('--store', type=int, default=0, help='samples stored per frame (default = spf; the player may play more of them while it waits for the retrace)')
 a = ap.parse_args()
 ff = os.environ.get('FFMPEG')
@@ -37,6 +39,13 @@ for k in range(nfr):
     cs = CubicSpline(np.arange(i0, i1) / 48000.0, x[i0:i1])
     t = np.minimum(t0 + np.arange(ST) / R, (i1 - 1) / 48000.0)
     out[k * ST:(k + 1) * ST] = cs(t)
+if a.glide > 0:
+    fr = out.reshape(nfr, ST)
+    for k in range(nfr - 1, 0, -1):          # the held value is the last sample played of the previous frame
+        held = fr[k - 1, a.spf + a.glide_n - 1]
+        w = (np.arange(a.glide) + 1.0) / (a.glide + 1.0)
+        fr[k, :a.glide] = (1.0 - w) * held + w * fr[k, :a.glide]
+    out = fr.reshape(-1)
 peak = np.abs(out).max()
 print(f'peak after band-limiting/interpolation: {peak:.0f} ({(np.abs(out) > 32767).sum()} samples above full scale)')
 out *= min(1.0, 30000.0 / peak)          # never clip: overshoot of the band-limited signal would crackle
