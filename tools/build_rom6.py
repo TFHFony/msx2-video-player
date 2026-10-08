@@ -26,7 +26,7 @@ VARIANTS = {
     # name: samples/frame, OUTI per slot (4 slots), fixed pads (PAL, NTSC) or None, adaptive start levels, no frequency write
     'base':   dict(spf=1200, k=[10, 10, 10, 11], pads=([1, 0, 1, 0], [3, 2, 3, 2]), adapt=None, nofreq=False),
     's1152':  dict(spf=1152, k=[10, 11, 11, 11], pads=([0, 0, 0, 0], [3, 2, 3, 2]), adapt=None, nofreq=False),
-    'adapt':  dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(5, 14), nofreq=False),
+    'adapt':  dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(3, 8), nofreq=False),
     'hw1280': dict(spf=1280, k=[10, 10, 10, 9], pads=None, adapt=(11, 16), nofreq=True),
 }
 NLEV = 28

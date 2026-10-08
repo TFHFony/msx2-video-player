@@ -1,12 +1,13 @@
-B0 equ 96
-PERIODHI equ 0
+B0 equ 6
+PERIODHI equ 15
 NLEV equ 28
-LEVP equ 11
-LEVN equ 16
+LEVP equ 3
+LEVN equ 8
 lad0:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -20,6 +21,7 @@ lad0:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -33,6 +35,7 @@ lad0:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -46,6 +49,9 @@ lad0:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -61,6 +67,7 @@ lad1:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -75,6 +82,7 @@ lad1:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -88,6 +96,7 @@ lad1:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -101,6 +110,9 @@ lad1:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -116,6 +128,7 @@ lad2:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -130,6 +143,7 @@ lad2:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -144,6 +158,7 @@ lad2:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -157,6 +172,9 @@ lad2:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -172,6 +190,7 @@ lad3:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -186,6 +205,7 @@ lad3:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -200,6 +220,7 @@ lad3:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -214,6 +235,9 @@ lad3:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -229,6 +253,7 @@ lad4:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -243,6 +268,7 @@ lad4:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -257,6 +283,7 @@ lad4:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -271,6 +298,9 @@ lad4:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -287,6 +317,7 @@ lad5:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -302,6 +333,7 @@ lad5:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -316,6 +348,7 @@ lad5:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -330,6 +363,9 @@ lad5:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -346,6 +382,7 @@ lad6:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -361,6 +398,7 @@ lad6:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -376,6 +414,7 @@ lad6:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -390,6 +429,9 @@ lad6:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -406,6 +448,7 @@ lad7:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -421,6 +464,7 @@ lad7:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -436,6 +480,7 @@ lad7:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -451,6 +496,9 @@ lad7:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -467,6 +515,7 @@ lad8:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -482,6 +531,7 @@ lad8:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -497,6 +547,7 @@ lad8:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -512,6 +563,9 @@ lad8:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -529,6 +583,7 @@ lad9:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -545,6 +600,7 @@ lad9:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -560,6 +616,7 @@ lad9:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -575,6 +632,9 @@ lad9:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -592,6 +652,7 @@ lad10:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -608,6 +669,7 @@ lad10:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -624,6 +686,7 @@ lad10:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -639,6 +702,9 @@ lad10:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -656,6 +722,7 @@ lad11:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -672,6 +739,7 @@ lad11:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -688,6 +756,7 @@ lad11:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -704,6 +773,9 @@ lad11:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -721,6 +793,7 @@ lad12:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -737,6 +810,7 @@ lad12:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -753,6 +827,7 @@ lad12:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -769,6 +844,9 @@ lad12:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -787,6 +865,7 @@ lad13:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -804,6 +883,7 @@ lad13:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -820,6 +900,7 @@ lad13:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -836,6 +917,9 @@ lad13:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -854,6 +938,7 @@ lad14:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -871,6 +956,7 @@ lad14:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -888,6 +974,7 @@ lad14:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -904,6 +991,9 @@ lad14:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -922,6 +1012,7 @@ lad15:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -939,6 +1030,7 @@ lad15:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -956,6 +1048,7 @@ lad15:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -973,6 +1066,9 @@ lad15:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -991,6 +1087,7 @@ lad16:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1008,6 +1105,7 @@ lad16:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1025,6 +1123,7 @@ lad16:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1042,6 +1141,9 @@ lad16:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1061,6 +1163,7 @@ lad17:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1079,6 +1182,7 @@ lad17:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1096,6 +1200,7 @@ lad17:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1113,6 +1218,9 @@ lad17:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1132,6 +1240,7 @@ lad18:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1150,6 +1259,7 @@ lad18:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1168,6 +1278,7 @@ lad18:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1185,6 +1296,9 @@ lad18:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1204,6 +1318,7 @@ lad19:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1222,6 +1337,7 @@ lad19:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1240,6 +1356,7 @@ lad19:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1258,6 +1375,9 @@ lad19:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1277,6 +1397,7 @@ lad20:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1295,6 +1416,7 @@ lad20:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1313,6 +1435,7 @@ lad20:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1331,6 +1454,9 @@ lad20:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1351,6 +1477,7 @@ lad21:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1370,6 +1497,7 @@ lad21:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1388,6 +1516,7 @@ lad21:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1406,6 +1535,9 @@ lad21:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1426,6 +1558,7 @@ lad22:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1445,6 +1578,7 @@ lad22:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1464,6 +1598,7 @@ lad22:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1482,6 +1617,9 @@ lad22:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1502,6 +1640,7 @@ lad23:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1521,6 +1660,7 @@ lad23:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1540,6 +1680,7 @@ lad23:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1559,6 +1700,9 @@ lad23:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1579,6 +1723,7 @@ lad24:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1598,6 +1743,7 @@ lad24:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1617,6 +1763,7 @@ lad24:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1636,6 +1783,9 @@ lad24:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1657,6 +1807,7 @@ lad25:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1677,6 +1828,7 @@ lad25:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1696,6 +1848,7 @@ lad25:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1715,6 +1868,9 @@ lad25:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1736,6 +1892,7 @@ lad26:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1756,6 +1913,7 @@ lad26:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1776,6 +1934,7 @@ lad26:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1795,6 +1954,9 @@ lad26:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
@@ -1816,6 +1978,7 @@ lad27:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1836,6 +1999,7 @@ lad27:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1856,6 +2020,7 @@ lad27:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
         outi
         outi
         outi
@@ -1876,6 +2041,9 @@ lad27:
         ld a,(de)
         inc de
         ld (0x9800),a
+        ld (0x9880),a
+        outi
+        outi
         outi
         outi
         outi
