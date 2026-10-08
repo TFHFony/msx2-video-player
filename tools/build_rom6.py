@@ -6,8 +6,6 @@ bank 0 = player; bank n (n>=1) = frame n-1:
 import os, struct, subprocess, sys
 import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
-SPF = 1200
-PART = 6150
 
 
 def find_sjasmplus():
@@ -24,6 +22,52 @@ def find_sjasmplus():
         return w
     sys.exit('sjasmplus not found')
 
+VARIANTS = {
+    # name: samples/frame, OUTI per slot (4 slots), fixed pads (PAL, NTSC) or None, adaptive start levels, no frequency write
+    'base':   dict(spf=1200, k=[10, 10, 10, 11], pads=([1, 0, 1, 0], [3, 2, 3, 2]), adapt=None, nofreq=False),
+    's1152':  dict(spf=1152, k=[10, 11, 11, 11], pads=([0, 0, 0, 0], [3, 2, 3, 2]), adapt=None, nofreq=False),
+    'adapt':  dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(5, 14), nofreq=False),
+    'hw1280': dict(spf=1280, k=[10, 10, 10, 9], pads=None, adapt=(11, 16), nofreq=True),
+}
+NLEV = 28
+
+
+def group_text(k, pads, nofreq):
+    out = []
+    for n, p in zip(k, pads):
+        out += ['        ld a,(de)', '        inc de', '        ld (0x9800),a']
+        if not nofreq:
+            out.append('        ld (0x9880),a')
+        out += ['        outi'] * n + ['        nop'] * p
+    return out
+
+
+def make_includes(v):
+    spf = v['spf']; k = v['k']
+    groups = spf // 8
+    ksum = sum(k)
+    part = groups * ksum
+    b0 = part % 256
+    for i in range(1, groups):
+        assert (b0 - i * ksum) % 256 != 0, 'B counter would hit zero early'
+    L = [f'B0 equ {b0}', f'PERIODHI equ {0 if v["nofreq"] else 15}']
+    if v['adapt']:
+        L += [f'NLEV equ {NLEV}', f'LEVP equ {v["adapt"][0]}', f'LEVN equ {v["adapt"][1]}']
+        for lev in range(NLEV):
+            pads = [(lev + 3) // 4, (lev + 2) // 4, (lev + 1) // 4, lev // 4]
+            L.append(f'lad{lev}:')
+            L += group_text(k, pads, v['nofreq'])
+            L += [f'        jp nz,lad{lev}', '        ret']
+        L.append('ladderP equ lad0')
+        L.append('ladtab:')
+        L += [f'        dw lad{lev}' for lev in range(NLEV)]
+    else:
+        for name, pads in zip(('ladderP', 'ladderN'), v['pads']):
+            L.append(f'{name}:')
+            L += group_text(k, pads, v['nofreq'])
+            L += [f'        jp nz,{name}', '        ret']
+    return chr(10).join(L) + chr(10), spf, part
+
 
 def main():
     stream = open(sys.argv[1], 'rb').read()
@@ -36,10 +80,14 @@ def main():
         gain = 0.97 * 32767.0 / max(1.0, np.abs(aud).max())
     rng = np.random.default_rng(1)
     s8 = np.clip(np.rint(aud * gain / 256.0 + (rng.random(len(aud)) - rng.random(len(aud))) * 0.5), -128, 127).astype(np.int8)
+    variant = os.environ.get('VARIANT', 'base')
+    v = VARIANTS[variant]
+    inc, SPF, PART = make_includes(v)
+    open(HERE + '/player6/ladders.inc', 'w').write(inc)
     need = nfr * SPF
     if len(s8) < need:
         s8 = np.concatenate([s8, np.zeros(need - len(s8), np.int8)])
-    r = subprocess.run([find_sjasmplus(), '--nologo', 'player6.asm'], cwd=HERE + '/player6', capture_output=True, text=True)
+    r = subprocess.run([find_sjasmplus(), '--nologo'] + (['-DADAPT'] if v['adapt'] else []) + ['player6.asm'], cwd=HERE + '/player6', capture_output=True, text=True)
     print(r.stdout, r.stderr)
     assert r.returncode == 0
     boot = bytearray(open(HERE + '/player6/player6.bin', 'rb').read())
@@ -69,6 +117,7 @@ def main():
     boot[0x23:0x43] = pal0
     rom = bytes(boot) + b''.join(banks)
     open(out, 'wb').write(rom)
+    print(f'variant {variant}: {SPF} samples/frame, part {PART} bytes')
     print(f'ROM {out}: {len(rom)} bytes, {len(rom) // 0x4000} banks, {nfr} frames, audio gain {gain:.3f}')
 
 

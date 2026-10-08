@@ -12,3 +12,11 @@ Variant of the Screen 4 full-refresh player that plays a **sampled soundtrack th
   audio e.g. `ffmpeg -i clip -vn -af "pan=mono|c0=0.5*c0+0.5*c1,aresample=14400" -f s16le -ac 1 audio.raw`).
 * openMSX: `-romtype NEO-16 -ext scc`. Verified on real hardware (NEO + SCC cartridge).
 * WebMSX needs the SCC deformation register at E0h-FFh in SCC mode (fixed in the WebMSX Wavegame branch).
+
+## Variants (build_rom6.py, env VARIANT=...)
+* `base`   1200 samples/frame, fixed padding (PAL ~15.4 kHz, NTSC ~14.7 kHz), 1.8-2.1 ms hold gap per frame.
+* `s1152`  1152 samples/frame, more timing margin (PAL ~15.0 kHz, NTSC ~14.2 kHz).
+* `adapt`  1200 samples/frame, the player measures the idle time left per frame (counts rounds of the retrace wait) and
+  adds/removes nops in the slot loop so the gap stays about 0.6-2.6k cycles on any machine (28 ladder levels).
+* `hw1280` as adapt, but 1280 samples/frame (16 kHz) without the frequency rewrite: needs a real SCC (or emulator) whose
+  channel output follows wave writes with the period set to 0; silent in openMSX.
