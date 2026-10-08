@@ -2062,6 +2062,374 @@ lad27:
         jp nz,lad27
         ret
 ladderP equ lad0
+tl0:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,10
+        djnz $
+        nop
+        jp tl0
+tl1:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,10
+        djnz $
+        nop
+        nop
+        jp tl1
+tl2:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,10
+        djnz $
+        nop
+        nop
+        jp tl2
+tl3:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,10
+        djnz $
+        nop
+        nop
+        jp tl3
+tl4:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        jp tl4
+tl5:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        jp tl5
+tl6:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        jp tl6
+tl7:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        jp tl7
+tl8:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        jp tl8
+tl9:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        jp tl9
+tl10:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        jp tl10
+tl11:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        jp tl11
+tl12:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        nop
+        jp tl12
+tl13:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        nop
+        jp tl13
+tl14:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        nop
+        jp tl14
+tl15:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,11
+        djnz $
+        nop
+        nop
+        jp tl15
+tl16:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        jp tl16
+tl17:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        jp tl17
+tl18:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        jp tl18
+tl19:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        jp tl19
+tl20:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        jp tl20
+tl21:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        jp tl21
+tl22:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        jp tl22
+tl23:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        nop
+        jp tl23
+tl24:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        nop
+        jp tl24
+tl25:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        nop
+        jp tl25
+tl26:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,12
+        djnz $
+        nop
+        nop
+        jp tl26
+tl27:
+        ld a,(de)
+        inc de
+        ld (0x9800),a
+        ld (0x9880),a
+        in a,(0x99)
+        and 0x40
+        ret nz
+        ld b,13
+        djnz $
+        jp tl27
+tltab:
+        dw tl0
+        dw tl1
+        dw tl2
+        dw tl3
+        dw tl4
+        dw tl5
+        dw tl6
+        dw tl7
+        dw tl8
+        dw tl9
+        dw tl10
+        dw tl11
+        dw tl12
+        dw tl13
+        dw tl14
+        dw tl15
+        dw tl16
+        dw tl17
+        dw tl18
+        dw tl19
+        dw tl20
+        dw tl21
+        dw tl22
+        dw tl23
+        dw tl24
+        dw tl25
+        dw tl26
+        dw tl27
 ladtab:
         dw lad0
         dw lad1

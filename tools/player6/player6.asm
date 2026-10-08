@@ -310,6 +310,19 @@ setlad: ld a,(lvl)
         ld (callp1+1),hl
         ld (callp2+1),hl
         ld (callp3+1),hl
+        IFDEF TAIL
+        ld a,(lvl)
+        add a,a
+        ld e,a
+        ld d,0
+        ld hl,tltab
+        add hl,de
+        ld e,(hl)
+        inc hl
+        ld d,(hl)
+        ex de,hl
+        ld (calltl+1),hl
+        ENDIF
         ret
         ENDIF
 
@@ -354,6 +367,13 @@ callp2: call ladderP
         SETA 2,0x00,0x00      ; colours of set 1: 8000h
         ld b,B0
 callp3: call ladderP
+        IFDEF TAIL
+tail_:
+calltl: call tl0              ; keeps playing samples until the retrace edge (patched per level)
+        ld hl,-(0x4040+1200)
+        add hl,de
+        ld (idle),hl          ; number of extra samples played while waiting
+        ELSE
         IFDEF ADAPT
 tail_:  ld de,0
 .tl:    inc de                ; 40 cycles per round: counts the idle time left in this frame
@@ -366,6 +386,7 @@ tail_:  in a,(0x99)           ; wait for the vertical-retrace edge that ends the
         and 0x40
         jr z,tail_
         ENDIF
+        ENDIF
         ld a,(cursel)
         call flip_
         ld a,(palflag)        ; a new palette takes effect together with the table flip
@@ -377,8 +398,20 @@ tail_:  in a,(0x99)           ; wait for the vertical-retrace edge that ends the
         otir
 .nopal:
         IFDEF ADAPT
-        ld a,(lvl)            ; adapt the slot padding: keep 600..2600 cycles of idle time per frame
+        ld a,(lvl)            ; adapt the slot padding so that a few spare slots are left per frame
         ld b,a
+        IFDEF TAIL
+        ld a,(idle+1)
+        or a
+        jr nz,.ao             ; edge missed by a whole field: back off hard
+        ld a,(idle)
+        cp 100
+        jr nc,.ao
+        cp 6
+        jr c,.al
+        cp 14
+        jr c,.ak
+        ELSE
         ld a,(idle+1)
         cp 3
         jr nc,.ao             ; edge missed by a whole field: back off hard
@@ -389,6 +422,7 @@ tail_:  in a,(0x99)           ; wait for the vertical-retrace edge that ends the
         jr c,.al
         cp 65
         jr c,.ak
+        ENDIF
 .am:    ld a,b
         cp NLEV-1
         jr nc,.ak

@@ -27,6 +27,7 @@ VARIANTS = {
     'base':   dict(spf=1200, k=[10, 10, 10, 11], pads=([1, 0, 1, 0], [3, 2, 3, 2]), adapt=None, nofreq=False),
     's1152':  dict(spf=1152, k=[10, 11, 11, 11], pads=([0, 0, 0, 0], [3, 2, 3, 2]), adapt=None, nofreq=False),
     'adapt':  dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(3, 8), nofreq=False),
+    'tail':   dict(spf=1200, k=[10, 10, 10, 11], pads=None, adapt=(3, 8), nofreq=False, tail=True, astore=1472),
     'hw1280': dict(spf=1280, k=[10, 10, 10, 9], pads=None, adapt=(11, 16), nofreq=True),
 }
 NLEV = 28
@@ -59,6 +60,18 @@ def make_includes(v):
             L += group_text(k, pads, v['nofreq'])
             L += [f'        jp nz,lad{lev}', '        ret']
         L.append('ladderP equ lad0')
+        if v.get('tail'):
+            for lev in range(NLEV):
+                ts = 230.25 + 1.25 * lev
+                want = ts - 80
+                best = min(((abs(14 * n + 3 + 5 * m - want), n, m) for n in range(1, 40) for m in range(3)))
+                _, n, m = best
+                L += [f'tl{lev}:', '        ld a,(de)', '        inc de', '        ld (0x9800),a']
+                if not v['nofreq']:
+                    L.append('        ld (0x9880),a')
+                L += ['        in a,(0x99)', '        and 0x40', '        ret nz', f'        ld b,{n}', f'        djnz $'] + ['        nop'] * m + [f'        jp tl{lev}']
+            L.append('tltab:')
+            L += [f'        dw tl{lev}' for lev in range(NLEV)]
         L.append('ladtab:')
         L += [f'        dw lad{lev}' for lev in range(NLEV)]
     else:
@@ -84,10 +97,11 @@ def main():
     v = VARIANTS[variant]
     inc, SPF, PART = make_includes(v)
     open(HERE + '/player6/ladders.inc', 'w').write(inc)
-    need = nfr * SPF
+    AST = v.get('astore', SPF)
+    need = nfr * AST
     if len(s8) < need:
         s8 = np.concatenate([s8, np.zeros(need - len(s8), np.int8)])
-    r = subprocess.run([find_sjasmplus(), '--nologo'] + (['-DADAPT'] if v['adapt'] else []) + ['player6.asm'], cwd=HERE + '/player6', capture_output=True, text=True)
+    r = subprocess.run([find_sjasmplus(), '--nologo'] + (['-DADAPT'] if v['adapt'] else []) + (['-DTAIL'] if v.get('tail') else []) + ['player6.asm'], cwd=HERE + '/player6', capture_output=True, text=True)
     print(r.stdout, r.stderr)
     assert r.returncode == 0
     boot = bytearray(open(HERE + '/player6/player6.bin', 'rb').read())
@@ -106,7 +120,7 @@ def main():
         b = bytearray(0x4000)
         b[0] = flags & 1
         b[1:33] = pal
-        b[0x40:0x40 + SPF] = s8[n * SPF:(n + 1) * SPF].tobytes()
+        b[0x40:0x40 + AST] = s8[n * AST:(n + 1) * AST].tobytes()
         b[0x600:0x600 + 6144] = pat
         b[0x600 + PART:0x600 + PART + 6144] = col
         banks.append(bytes(b))
