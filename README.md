@@ -15,11 +15,7 @@ Play a video clip with background music on a plain **MSX2** (V9938, 64 KB RAM) f
 
 Made by Claude & The File-Hunter of FONY. Released under the [Unlicense](LICENSE) (public domain).
 
-▶ **[Play sample video #1](https://download.file-hunter.com/Fony/Video%20ROMs/File-Hunter.com%20Easter%20Egg%20%231%20-%202017.zip)** | **[Play sample video #2](https://download.file-hunter.com/Fony/Video%20ROMs/File-Hunter.com%20Easter%20Egg%20%232%20-%202020.zip)** | **(Mildly NSFW)
-
-With SCC Samples:▶ **[Play sample video #1](https://webmsx.file-hunter.com/bitter.html)** (all ages)
-
-**[Download sample videos](https://download.file-hunter.com/Fony/Video%20ROMs/)** 
+**[Download & Play sample videos](https://download.file-hunter.com/Fony/Video%20ROMs/)** 
 
 ## Quick start
 
